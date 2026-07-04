@@ -9,7 +9,7 @@ const App: React.FC<AppProps> = () => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <Text style={styles.title}>Welcome to Tracking Waste</Text>
+        <Text style={styles.title}>Tracking Waste</Text>
         <View style={styles.card}>
           <Text style={styles.subtitle}>Total Gasto:</Text>
           <Text style={styles.value}>$0.00</Text>
@@ -37,31 +37,33 @@ const App: React.FC<AppProps> = () => {
 
 const styles = StyleSheet.create({
   container: {
-    paddingTop: 80,
     flex: 1,
-    justifyContent: "flex-start",
+    justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f5f5f5",
-    padding: 20,
+    backgroundColor: "#faf7e7",
+    paddingHorizontal: 20,
   },
   card: {
-    marginTop: 80,
     alignItems: "center",
     justifyContent: "center",
     width: "80%",
     borderRadius: 16,
-    elevation: 5,
+    elevation: 15,
     shadowRadius: 5,
     padding: 20,
     shadowOffset: { width: 10, height: 0 },
+    backgroundColor: "#fff",
   },
 
   title: {
-    fontSize: 26,
+    position: "absolute",
+    top: 50,
+    fontSize: 34,
     fontWeight: "bold",
     color: "#333",
     marginBottom: 10,
     alignSelf: "center",
+    justifyContent: "flex-start",
   },
   subtitle: {
     fontSize: 26,
@@ -80,8 +82,8 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     width: "80%",
     height: "50%",
-    borderRadius: 5,
-    elevation: 5,
+    borderRadius: 16,
+    elevation: 15,
     shadowRadius: 5,
     backgroundColor: "#888",
     opacity: 0.9,
@@ -104,10 +106,11 @@ const styles = StyleSheet.create({
     right: 20,
     width: 60,
     height: 60,
-    borderRadius: 5,
-    backgroundColor: "#47e907",
+    borderRadius: 10,
+    backgroundColor: "#41d606",
     justifyContent: "center",
     alignItems: "center",
+    elevation: 10,
   },
   triggertext: {
     fontSize: 26,
