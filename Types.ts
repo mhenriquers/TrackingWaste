@@ -3,6 +3,10 @@ export interface Expense {
   name: string;
   amount: number;
   createdAt: Date;
-  category: "bill" | "variable";
+  category: "credit card" | "debit";
   isWaste: boolean;
 }
+export type RootStackParamList = {
+  Home: undefined;
+  ExpenseList: undefined;
+};
