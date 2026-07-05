@@ -7,10 +7,10 @@ import {
   SafeAreaView,
   TouchableOpacity,
 } from "react-native";
-import { Expense } from "./Types";
+import { Type } from "./Types";
 
 interface ExpenseProps {
-  expenseList: Expense[];
+  expenseList: Type[];
 }
 export const ExpenseList: React.FC<ExpenseProps> = ({ expenseList }) => {
   return (
@@ -35,4 +35,4 @@ const styles = StyleSheet.create({
   expenseValue: {},
 });
 
-export default ExpenseProps;
+export default ExpenseList;

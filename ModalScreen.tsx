@@ -12,12 +12,12 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Expense } from "./Types";
+import { Type } from "./Types";
 
 interface ModalScreenProps {
   visible: boolean;
   onClose: () => void;
-  onSave: (expenseData: Omit<Expense, "id" | "createdAt">) => void;
+  onSave: (expenseData: Omit<Type, "id" | "createdAt">) => void;
 }
 
 export const ModalScreen: React.FC<ModalScreenProps> = ({
@@ -309,3 +309,5 @@ const styles = StyleSheet.create({
     color: "#fff",
   },
 });
+
+export default ModalScreen;
