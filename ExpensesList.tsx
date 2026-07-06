@@ -19,9 +19,18 @@ const ExpenseList: React.FC<ExpenseProps> = ({ expenseList }) => {
       keyExtractor={(item) => item.id}
       renderItem={({ item }) => (
         <View style={styles.expenseCard}>
-          <Text style={styles.expenseName}> {item.title}</Text>
-          <Text style={styles.expenseValue}> R$ {item.amount.toFixed(2)}</Text>
-          <Text style={styles.expenseObs}> Obs:{item.observacao} </Text>
+          <View style={styles.cardSuperior}>
+            <Text style={styles.expenseSuperior}> {item.title}</Text>
+            <Text style={styles.expenseSuperior}>
+              {" "}
+              R$ {item.amount.toFixed(2)}
+            </Text>
+          </View>
+          <Text style={styles.expenseInferior}>
+            {" "}
+            {item.createdAt.toLocaleString("pt-BR")}
+          </Text>
+          <Text style={styles.expenseInferior}> Obs:{item.observacao} </Text>
         </View>
       )}
     />
@@ -39,16 +48,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFF",
   },
 
-  expenseName: {
-    fontWeight: "bold",
-    fontSize: 18,
+  cardSuperior: {
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 
-  expenseValue: {
+  expenseSuperior: {
     fontWeight: "bold",
+    fontSize: 26,
   },
 
-  expenseObs: {},
+  expenseInferior: {
+    fontSize: 16,
+    marginTop: 2,
+  },
 });
 
 export default ExpenseList;

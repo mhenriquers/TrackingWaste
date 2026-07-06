@@ -51,6 +51,7 @@ const ModalScreen: React.FC<ModalScreenProps> = ({
     });
     setNameExpense("");
     setAmount("");
+    setObs("");
   };
 
   React.useEffect(() => {

@@ -36,6 +36,7 @@ const App: React.FC = () => {
             <HomeScreen
               {...props}
               onOpenModal={() => setIsModalVisible(true)}
+              expenses={expenses}
             />
           )}
         </Stack.Screen>

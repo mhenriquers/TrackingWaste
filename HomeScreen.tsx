@@ -15,11 +15,12 @@ import ExpenseList from "./ExpensesList";
 
 interface AppProps {}
 
-const HomeScreen: React.FC<{ navigation: any; onOpenModal: () => void }> = ({
-  navigation,
-  onOpenModal,
-}) => {
-  // 🟢 Corrigido o "s" minúsculo em setCurrentScreen para seguir o padrão do React
+const HomeScreen: React.FC<{
+  navigation: any;
+  onOpenModal: () => void;
+  expenses: Type[];
+}> = ({ navigation, onOpenModal, expenses }) => {
+  const valorExpense = expenses.reduce((total, item) => total + item.amount, 0);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -32,9 +33,12 @@ const HomeScreen: React.FC<{ navigation: any; onOpenModal: () => void }> = ({
             <Text style={styles.value}> R$ 0,00 </Text>
           </TouchableOpacity>
 
-          <TouchableOpacity style={[styles.card, styles.subCard]}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ExpenseList")}
+            style={[styles.card, styles.subCard]}
+          >
             <Text style={styles.subtitle}> Cartão: </Text>
-            <Text style={styles.value}> R$ 0,00 </Text>
+            <Text style={styles.value}> R$ {valorExpense.toFixed(2)} </Text>
           </TouchableOpacity>
         </View>
 
