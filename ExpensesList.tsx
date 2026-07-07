@@ -12,14 +12,16 @@ import { Type } from "./Types";
 
 interface ExpenseProps {
   expenseList: Type[];
-  totalGasto: number;
+  totalGastoCredito: number;
+  totalGastoDebito: number;
   selectedExpenseIds: string[];
   onSelectExpense: (id: string) => void;
   isDeleteMode: boolean;
 }
 const ExpenseList: React.FC<ExpenseProps> = ({
   expenseList,
-  totalGasto,
+  totalGastoCredito,
+  totalGastoDebito,
   selectedExpenseIds,
   onSelectExpense,
   isDeleteMode,
@@ -32,20 +34,19 @@ const ExpenseList: React.FC<ExpenseProps> = ({
       </View> */}
       <FlatList
         ListHeaderComponent={
-          <View style={{ overflow: "visible", paddingHorizontal: 12 }}>
-            <View style={styles.totalCard}>
-              <Text style={{ fontSize: 14, color: "#666", fontWeight: "500" }}>
-                Total:
+          //--------------------------------CARD TOTAL---------------------------------//
+
+          <View style={styles.containerCards}>
+            <View style={[styles.totalCard, styles.totalCredit]}>
+              <Text style={styles.textTotal}>Crédito:</Text>
+              <Text style={styles.textoNumberTotal}>
+                R$ {totalGastoCredito.toFixed(2)}
               </Text>
-              <Text
-                style={{
-                  fontSize: 26,
-                  fontWeight: "bold",
-                  color: "#333",
-                  marginTop: 6,
-                }}
-              >
-                R$ {totalGasto.toFixed(2)}
+            </View>
+            <View style={[styles.totalCard, styles.totalDebit]}>
+              <Text style={styles.textTotal}>Débito:</Text>
+              <Text style={styles.textoNumberTotal}>
+                R$ {totalGastoDebito.toFixed(2)}
               </Text>
             </View>
           </View>
@@ -56,16 +57,34 @@ const ExpenseList: React.FC<ExpenseProps> = ({
           <View style={styles.expenseCard}>
             <TouchableOpacity>
               <View style={styles.cardSuperior}>
-                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    flex: 1,
+                  }}
+                >
                   <Image
-                    source={require("./assets/credit-card-icon.png")}
+                    source={
+                      item.category === "credit card"
+                        ? require("./assets/credit-card-icon.png")
+                        : require("./assets/money-icon.png")
+                    }
                     style={styles.cardIcon}
                   />
-                  <Text style={styles.expenseTitle}> {item.title}</Text>
+                  <View style={styles.cardTitle}>
+                    <Text style={styles.expenseTitle} numberOfLines={2}>
+                      {" "}
+                      {item.title}
+                    </Text>
+                  </View>
                 </View>
-                <Text style={styles.expenseSuperior}>
-                  R$ {item.amount.toFixed(2)}
-                </Text>
+
+                <View>
+                  <Text style={styles.expenseValue}>
+                    R$ {item.amount.toFixed(2)}
+                  </Text>
+                </View>
               </View>
               <Text style={styles.expenseInferior}>
                 {item.createdAt.toLocaleString("pt-BR")}
@@ -99,6 +118,12 @@ const ExpenseList: React.FC<ExpenseProps> = ({
 };
 
 const styles = StyleSheet.create({
+  containerCards: {
+    overflow: "visible",
+    paddingHorizontal: 12,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   expenseCard: {
     borderWidth: 1,
     borderColor: "#333",
@@ -112,29 +137,64 @@ const styles = StyleSheet.create({
   },
 
   totalCard: {
-    backgroundColor: "#90CAF9",
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 25,
     borderRadius: 12,
-    margin: 10,
+    marginVertical: 10,
     alignItems: "center",
     justifyContent: "center",
     borderWidth: 2,
     borderColor: "#333",
   },
 
-  cardSuperior: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  totalCredit: {
+    left: 10,
+    backgroundColor: "#90CAF9",
+    minWidth: "40%",
   },
 
-  expenseSuperior: {
+  totalDebit: {
+    right: 15,
+    marginLeft: 5,
+    backgroundColor: "#bfffab",
+    minWidth: "40%",
+  },
+
+  textTotal: {
+    fontSize: 14,
+    color: "#666",
+    fontWeight: "500",
+  },
+
+  textoNumberTotal: {
+    fontSize: 20,
+    fontWeight: "bold",
+    color: "#333",
+    marginTop: 6,
+  },
+  cardSuperior: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+  },
+
+  expenseValue: {
     fontWeight: "bold",
     fontSize: 20,
+    textAlign: "right",
+  },
+
+  cardTitle: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    maxWidth: 165,
+    borderWidth: 1,
+    borderColor: "#000",
   },
 
   expenseTitle: {
+    paddingTop: 10,
     fontSize: 20,
     fontWeight: "bold",
   },

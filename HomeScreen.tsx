@@ -19,8 +19,17 @@ const HomeScreen: React.FC<{
   navigation: any;
   onOpenModal: () => void;
   expenses: Type[];
-  totalGasto: number;
-}> = ({ navigation, onOpenModal, expenses, totalGasto }) => {
+  totalGastoCredito: number;
+  totalGastoDebito: number;
+  valorTotal: number;
+}> = ({
+  navigation,
+  onOpenModal,
+  expenses,
+  totalGastoCredito,
+  totalGastoDebito,
+  valorTotal,
+}) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -37,19 +46,22 @@ const HomeScreen: React.FC<{
             style={[styles.card, styles.subCard]}
           >
             <Text style={styles.subtitle}> Cartão: </Text>
-            <Text style={styles.value}> R$ {totalGasto.toFixed(2)} </Text>
+            <Text style={styles.value}>
+              {" "}
+              R$ {totalGastoCredito.toFixed(2)}{" "}
+            </Text>
           </TouchableOpacity>
         </View>
 
         <View style={styles.containerCards}>
           <TouchableOpacity style={[styles.card, styles.subCard]}>
             <Text style={styles.subtitle}> Débito </Text>
-            <Text style={styles.value}> R$ 0,00 </Text>
+            <Text style={styles.value}> R$ {totalGastoDebito.toFixed(2)} </Text>
           </TouchableOpacity>
 
           <TouchableOpacity style={[styles.card, styles.subCard]}>
             <Text style={styles.subtitle}>Total:</Text>
-            <Text style={styles.value}>R$0,00</Text>
+            <Text style={styles.value}>R$ {valorTotal.toFixed(2)} </Text>
           </TouchableOpacity>
         </View>
 

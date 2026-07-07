@@ -16,7 +16,16 @@ type HomeProps = NativeStackScreenProps<RootStackParamList, "Home">;
 
 const App: React.FC = () => {
   const [expenses, setExpenses] = useState<Type[]>([]);
-  const valorTotal = expenses.reduce((total, item) => total + item.amount, 0);
+
+  const valorTotalCredito = expenses
+    .filter((item) => item.category === "credit card")
+    .reduce((total, item) => total + item.amount, 0);
+
+  const valorTotalDebito = expenses
+    .filter((item) => item.category === "debit")
+    .reduce((total, item) => total + item.amount, 0);
+
+  const valorTotal = valorTotalCredito + valorTotalDebito;
 
   const handleSaveExpense = (newExpenseData: any) => {
     const completeExpense: Type = {
@@ -69,7 +78,9 @@ const App: React.FC = () => {
               {...props}
               onOpenModal={() => setIsModalVisible(true)}
               expenses={expenses}
-              totalGasto={valorTotal}
+              totalGastoCredito={valorTotalCredito}
+              totalGastoDebito={valorTotalDebito}
+              valorTotal={valorTotal}
             />
           )}
         </Stack.Screen>
@@ -107,7 +118,8 @@ const App: React.FC = () => {
           {(props) => (
             <ExpenseList
               expenseList={expenses}
-              totalGasto={valorTotal}
+              totalGastoCredito={valorTotalCredito}
+              totalGastoDebito={valorTotalDebito}
               selectedExpenseIds={selectedExpenseIds}
               onSelectExpense={toggleSelectExpense}
               isDeleteMode={isDeleteMode}
@@ -120,8 +132,12 @@ const App: React.FC = () => {
         <View style={styles.menuOverlay}>
           <TouchableOpacity
             onPress={() => {
-              setIsDeleteMode(true);
-              setIsMenuVisible(false);
+              if (expenses.length > 0) {
+                setIsDeleteMode(true);
+                setIsMenuVisible(false);
+              } else {
+                alert("Não há mais que possa ser feito! ");
+              }
             }}
           >
             <Text style={styles.menuOption}> Apagar </Text>
