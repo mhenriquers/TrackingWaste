@@ -4,7 +4,6 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  SafeAreaView,
   TouchableOpacity,
   Image,
 } from "react-native";
@@ -28,10 +27,6 @@ const ExpenseList: React.FC<ExpenseProps> = ({
 }) => {
   return (
     <View style={{ flex: 1 }}>
-      {/* <View style={styles.totalCard}>
-        <Text> Total: </Text>
-        <Text>R$ {totalGasto.toFixed(2)}</Text>
-      </View> */}
       <FlatList
         ListHeaderComponent={
           //--------------------------------CARD TOTAL---------------------------------//
@@ -93,6 +88,7 @@ const ExpenseList: React.FC<ExpenseProps> = ({
                 <Text style={styles.expenseInferior}>{item.observacao} </Text>
               )}
             </TouchableOpacity>
+
             {isDeleteMode && (
               <View style={styles.checkBox}>
                 <TouchableOpacity
@@ -124,6 +120,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
   },
+
   expenseCard: {
     borderWidth: 1,
     borderColor: "#333",

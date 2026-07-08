@@ -2,23 +2,28 @@ import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const Bills: React.FC = () => {
+interface BillProps {
+  onOpenModal: () => void;
+}
+
+const Bills: React.FC<BillProps> = ({ onOpenModal }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
         <View style={styles.card}>
           <View style={styles.billcontainer}>
             <View style={styles.textContainer}>
-              <View style={styles.titleContainer}>
-                <Text style={styles.textBill}>Internet</Text>
-              </View>
-              <Text> Venc: dia 5 </Text>
+              <Text style={styles.textBill}>Internet</Text>
+
+              <Text style={styles.textBill}> R$ 100,00 </Text>
             </View>
-            <View style={styles.checkMark}></View>
+
+            <Text style={styles.subTextBill}> Venc: dia 5 </Text>
           </View>
+          <View style={styles.checkMark}></View>
         </View>
 
-        <TouchableOpacity style={styles.triggercard}>
+        <TouchableOpacity onPress={onOpenModal} style={styles.triggercard}>
           <Text style={styles.triggertext}> + </Text>
         </TouchableOpacity>
       </View>
@@ -38,14 +43,15 @@ const styles = StyleSheet.create({
     borderColor: "#555",
     borderRadius: 10,
     minHeight: "11%",
-    width: "80%",
+    width: "90%",
     backgroundColor: "#fff",
     elevation: 10,
+    flexDirection: "row",
   },
 
   billcontainer: {
     minHeight: "6%",
-    width: "93%",
+    width: "80%",
     marginTop: 10,
     marginHorizontal: 10,
     flexDirection: "row",
@@ -57,25 +63,26 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#333",
     borderRadius: 5,
+    marginBottom: 10,
   },
 
   textContainer: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-
-    width: "82%",
+    width: "100%",
+    paddingTop: 5,
   },
 
-  titleContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    maxWidth: "65%",
-  },
   textBill: {
     fontSize: 20,
     fontWeight: "bold",
-    margin: 10,
+    marginHorizontal: 10,
+  },
+
+  subTextBill: {
+    marginBottom: 10,
+    marginLeft: 10,
   },
 
   checkMark: {
@@ -85,7 +92,9 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     borderColor: "#333",
     backgroundColor: "#ffffff",
-    margin: 10,
+    marginVertical: 10,
+    marginRight: 10,
+    alignSelf: "center",
   },
 
   triggercard: {
@@ -101,6 +110,7 @@ const styles = StyleSheet.create({
     elevation: 10,
     flex: 1,
   },
+
   buttonTrigger: {
     alignItems: "center",
     justifyContent: "center",

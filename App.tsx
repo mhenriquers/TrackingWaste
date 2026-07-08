@@ -12,8 +12,7 @@ import { TouchableOpacity, Image, StyleSheet, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import Bills from "./Bills";
-
-//import { create } from "react-native/types_generated/Libraries/ReactNative/ReactFabricPublicInstance/ReactNativeAttributePayload";
+import ModalBill from "./ModalBills";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 type HomeProps = NativeStackScreenProps<RootStackParamList, "Home">;
@@ -32,9 +31,9 @@ const App: React.FC = () => {
   const valorTotal = valorTotalCredito + valorTotalDebito;
 
   const [isModalVisible, setIsModalVisible] = useState(false);
+  const [modalType, setModalType] = useState<"expense" | "bill" | null>(null);
 
   const [selectedExpenseIds, setSelectedExpenseIds] = useState<string[]>([]);
-
   const [isDeleteMode, setIsDeleteMode] = useState(false);
 
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -48,7 +47,9 @@ const App: React.FC = () => {
         : [...prev, id],
     );
   };
+
   // ------------------------função para salvar os dados
+
   const saveExpenses = async (expensesToSave: Type[]) => {
     try {
       await AsyncStorage.setItem("expenses", JSON.stringify(expensesToSave));
@@ -56,6 +57,7 @@ const App: React.FC = () => {
       console.error("Erro ao salvar gastos", error);
     }
   };
+
   //--------------------------função para carregar os dados
 
   const loadExpenses = async () => {
@@ -76,6 +78,7 @@ const App: React.FC = () => {
       console.error("Erro ao carregar dados", error);
     }
   };
+
   //------------------------------------------função para salvar
   const handleSaveExpense = (newExpenseData: any) => {
     const completeExpense: Type = {
@@ -116,7 +119,10 @@ const App: React.FC = () => {
           {(props) => (
             <HomeScreen
               {...props}
-              onOpenModal={() => setIsModalVisible(true)}
+              onOpenModal={() => {
+                setModalType("expense");
+                setIsModalVisible(true);
+              }}
               expenses={expenses}
               totalGastoCredito={valorTotalCredito}
               totalGastoDebito={valorTotalDebito}
@@ -169,9 +175,23 @@ const App: React.FC = () => {
 
         <Stack.Screen
           name={"Bills"}
-          component={Bills}
           options={{ headerShown: true, headerTitle: "Contas Fixas" }}
-        ></Stack.Screen>
+          listeners={({ navigation }) => ({
+            beforeRemove: () => {
+              setIsModalVisible(false);
+            },
+          })}
+        >
+          {(props: NativeStackScreenProps<RootStackParamList, "Bills">) => (
+            <Bills
+              {...props}
+              onOpenModal={() => {
+                setModalType("bill");
+                setIsModalVisible(true);
+              }}
+            />
+          )}
+        </Stack.Screen>
       </Stack.Navigator>
 
       {isMenuVisible && (
@@ -215,11 +235,20 @@ const App: React.FC = () => {
         </View>
       )}
 
-      <ModalScreen
-        visible={isModalVisible}
-        onClose={() => setIsModalVisible(false)}
-        onSave={handleSaveExpense}
-      />
+      {isModalVisible && modalType === "expense" && (
+        <ModalScreen
+          visible={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+          onSave={handleSaveExpense}
+        />
+      )}
+
+      {isModalVisible && modalType === "bill" && (
+        <ModalBill
+          visible={isModalVisible}
+          onClose={() => setIsModalVisible(false)}
+        />
+      )}
     </NavigationContainer>
   );
 };

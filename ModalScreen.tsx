@@ -20,11 +20,25 @@ interface ModalScreenProps {
   onSave: (expenseData: Omit<Type, "id" | "createdAt">) => void;
 }
 
+//---------------------- função pra tirar modal e fechar teclado ao tocar fora--------------------------
+export const handleBackgroundTap = (
+  isKeyboardVisible: boolean,
+  onClose: () => void,
+) => {
+  if (isKeyboardVisible) {
+    Keyboard.dismiss();
+  } else {
+    onClose();
+  }
+};
 const ModalScreen: React.FC<ModalScreenProps> = ({
   visible,
   onClose,
   onSave,
 }) => {
+  //-----------------------varavel de controle do teclado-----------------------------
+  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
+
   const [paymentMethod, setPaymentMethod] = useState<"credit card" | "debit">(
     "credit card",
   );
@@ -32,11 +46,10 @@ const ModalScreen: React.FC<ModalScreenProps> = ({
   const [amount, setAmount] = useState("");
   const [obs, setObs] = useState("");
 
-  const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
-
+  //-------------------------------- função que adiciona e salva card---------------------
   const handleAdd = () => {
     if (nameExpense.trim() === "" || amount.trim() === "") {
-      return;
+      alert("Preencha os Campos de Nome e Valor!");
     }
     const valorNumerico = parseFloat(amount.replace(",", "."));
 
@@ -68,20 +81,15 @@ const ModalScreen: React.FC<ModalScreenProps> = ({
     };
   }, []);
 
-  const handleBackgroundTap = () => {
-    if (isKeyboardVisible) {
-      Keyboard.dismiss();
-    } else {
-      onClose();
-    }
-  };
+  const handlePress = () => handleBackgroundTap(isKeyboardVisible, onClose);
+
   return (
     <Modal visible={visible} transparent={true} animationType="fade">
       <KeyboardAvoidingView behavior="height" style={{ flex: 1 }}>
-        <TouchableWithoutFeedback onPress={handleBackgroundTap}>
+        <TouchableWithoutFeedback onPress={handlePress}>
           <View style={styles.modalOverlay}>
             <TouchableWithoutFeedback onPress={(e) => e.stopPropagation()}>
-              <View style={styles.modalcard}>
+              <View style={styles.modalCard}>
                 <View style={styles.titleContainer}>
                   <Text style={styles.titleText}> Adicionar Gasto </Text>
                   <TouchableOpacity onPress={onClose}>
@@ -93,8 +101,11 @@ const ModalScreen: React.FC<ModalScreenProps> = ({
                     </View>
                   </TouchableOpacity>
                 </View>
+                {/*-----------------------------Cards de Inputs -----------------------------*/}
 
                 <View style={styles.generalContainer}>
+                  {/*---------------input Nome--------------*/}
+
                   <View style={styles.containerLabel}>
                     <Text style={styles.modaltext}>Nome: </Text>
                     <TextInput
@@ -104,7 +115,7 @@ const ModalScreen: React.FC<ModalScreenProps> = ({
                       onChangeText={setNameExpense}
                     />
                   </View>
-
+                  {/*--------------input Valor--------------*/}
                   <View style={styles.containerLabel}>
                     <Text style={styles.modaltext}>Valor: </Text>
                     <TextInput
@@ -116,11 +127,13 @@ const ModalScreen: React.FC<ModalScreenProps> = ({
                     />
                   </View>
 
+                  {/*-------------input Obs-----------------*/}
+
                   <View style={styles.containerLabel}>
                     <Text style={styles.modaltext}> Obs : </Text>
                     <TextInput
                       style={styles.input}
-                      placeholder="Digite a observação"
+                      placeholder="Observação (opcional)"
                       value={obs}
                       onChangeText={setObs}
                     />
@@ -201,7 +214,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0, 0, 0, 0.5)",
   },
 
-  modalcard: {
+  modalCard: {
     position: "absolute",
     top: "20%",
     right: "10%",
@@ -226,6 +239,14 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
 
+  titleText: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#333",
+    paddingLeft: 10,
+    paddingTop: 10,
+  },
+
   closeImageContainer: {
     alignSelf: "flex-end",
   },
@@ -236,14 +257,6 @@ const styles = StyleSheet.create({
     margin: 15,
     alignSelf: "flex-end",
     justifyContent: "flex-end",
-  },
-
-  titleText: {
-    fontSize: 28,
-    fontWeight: "bold",
-    color: "#333",
-    paddingLeft: 10,
-    paddingTop: 10,
   },
 
   containerLabel: {

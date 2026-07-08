@@ -1,32 +1,20 @@
-import React, { useState } from "react";
-import {
-  Modal,
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-} from "react-native";
-
+import React from "react";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import ModalScreen from "./ModalScreen";
-import { Type, RootStackParamList } from "./Types";
-import ExpenseList from "./ExpensesList";
-import Bills from "./Bills";
+import { Type } from "./Types";
 
-interface AppProps {}
-
-const HomeScreen: React.FC<{
+interface AppProps {
   navigation: any;
   onOpenModal: () => void;
   expenses: Type[];
   totalGastoCredito: number;
   totalGastoDebito: number;
   valorTotal: number;
-}> = ({
+}
+
+const HomeScreen: React.FC<AppProps> = ({
   navigation,
   onOpenModal,
-  expenses,
   totalGastoCredito,
   totalGastoDebito,
   valorTotal,
@@ -36,50 +24,35 @@ const HomeScreen: React.FC<{
       <View style={styles.container}>
         <Image source={require("./assets/logo.png")} style={styles.logo} />
 
-        <View style={styles.containerCards}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Bills")}
-            style={[styles.card, styles.subCard]}
-          >
-            <Text style={styles.subtitle}> Fixas: </Text>
-            <Text style={styles.value}> R$ 0,00 </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => navigation.navigate("ExpenseList")}
-            style={[styles.card, styles.subCard]}
-          >
-            <Text style={styles.subtitle}> Cartão: </Text>
-            <Text style={styles.value}>
-              {" "}
-              R$ {totalGastoCredito.toFixed(2)}{" "}
-            </Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.containerCards}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("ExpenseList")}
-            style={[styles.card, styles.subCard]}
-          >
-            <Text style={styles.subtitle}> Débito </Text>
-            <Text style={styles.value}> R$ {totalGastoDebito.toFixed(2)} </Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity style={[styles.card, styles.subCard]}>
-            <Text style={styles.subtitle}>Total:</Text>
-            <Text style={styles.value}>R$ {valorTotal.toFixed(2)} </Text>
-          </TouchableOpacity>
-        </View>
-
-        {/*----------------modal------------------*/}
-
-        {/* <TouchableOpacity
-          onPress={() => navigation.navigate("ExpenseList")}
-          style={styles.linkButton}
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Bills")}
+          style={[styles.card, styles.subCard]}
         >
-          <Text style={styles.linkButtonText}> Meus gastos </Text>
-        </TouchableOpacity> */}
+          <Text style={styles.subtitle}> Fixas: </Text>
+          <Text style={styles.progressText}> 4/7 </Text>
+          <Text style={styles.value}> R$ 0,00 </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ExpenseList")}
+          style={[styles.card, styles.subCard]}
+        >
+          <Text style={styles.subtitle}> Cartão: </Text>
+          <Text style={styles.value}> R$ {totalGastoCredito.toFixed(2)} </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ExpenseList")}
+          style={[styles.card, styles.subCard]}
+        >
+          <Text style={styles.subtitle}> Débito </Text>
+          <Text style={styles.value}> R$ {totalGastoDebito.toFixed(2)} </Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity style={[styles.card, styles.subCard]}>
+          <Text style={styles.subtitle}>Total:</Text>
+          <Text style={styles.value}>R$ {valorTotal.toFixed(2)} </Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={onOpenModal} style={styles.triggercard}>
           <Text style={styles.triggertext}> + </Text>
         </TouchableOpacity>
@@ -109,8 +82,9 @@ const styles = StyleSheet.create({
   },
 
   containerCards: {
-    flexDirection: "row",
-    top: 20,
+    borderWidth: 1,
+    borderColor: "#333",
+    width: "90%",
   },
 
   logo: {
@@ -120,24 +94,24 @@ const styles = StyleSheet.create({
   },
 
   card: {
-    alignItems: "flex-start",
+    alignSelf: "flex-start",
     justifyContent: "center",
-    width: "100%",
+    width: "97%",
     borderRadius: 16,
     elevation: 15,
     shadowRadius: 5,
-    padding: 20,
+    padding: 10,
     shadowOffset: { width: 10, height: 0 },
     backgroundColor: "#fff",
     margin: 5,
-    marginTop: 20,
   },
 
   subCard: {
-    width: "50%",
     margin: 5,
     marginTop: 0,
     paddingVertical: 25,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
 
   title: {
@@ -151,16 +125,24 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
 
+  progressText: {
+    textAlign: "center",
+    alignSelf: "center",
+    fontSize: 20,
+  },
+
   subtitle: {
     fontSize: 20,
     color: "#333",
     fontWeight: "bold",
     alignItems: "flex-start",
+    paddingLeft: 5,
   },
 
   value: {
     fontSize: 18,
     color: "#333",
+    fontWeight: "bold",
   },
 
   triggercard: {
