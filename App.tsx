@@ -10,13 +10,21 @@ import HomeScreen from "./HomeScreen";
 import ModalScreen from "./ModalScreen";
 import { TouchableOpacity, Image, StyleSheet, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useFocusEffect } from "@react-navigation/native";
 import Bills from "./Bills";
 import ModalBill from "./ModalBills";
 import RenderCard from "./RenderCard";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 type HomeProps = NativeStackScreenProps<RootStackParamList, "Home">;
+
+//--------------------------função para salvar dados
+const SalvaConta = async (billsToSave: InterfaceBill[]) => {
+  try {
+    await AsyncStorage.setItem("bills", JSON.stringify(billsToSave));
+  } catch (error) {
+    alert("Erro ao salvar contas");
+  }
+};
 
 const App: React.FC = () => {
   const [expenses, setExpenses] = useState<Type[]>([]);
@@ -115,22 +123,16 @@ const App: React.FC = () => {
 
   //-------------------------------função pra salvar conta fixa
   const [bills, setBills] = useState<InterfaceBill[]>([]);
+
   const handleSaveBill = (billData: InterfaceBill) => {
-    setBills([...bills, billData]);
+    const updatedBills = [...bills, billData];
+    setBills(updatedBills);
+    SalvaConta(updatedBills);
     setIsModalVisible(false);
   };
 
-  //--------------------------função para salvar dados
-  const SalvaConta = async (billsToSave: InterfaceBill[]) => {
-    try {
-      await AsyncStorage.setItem("bills", JSON.stringify(billsToSave));
-    } catch (error) {
-      alert("Erro ao salvar contas");
-    }
-  };
-
   //--------------------------função para carregar dados
-  const CarregaConta = async () => {
+  const carregaConta = async () => {
     try {
       const savedBills = await AsyncStorage.getItem("bills");
       if (savedBills) {
@@ -141,6 +143,10 @@ const App: React.FC = () => {
     }
   };
 
+  useEffect(() => {
+    loadExpenses();
+    carregaConta();
+  }, []);
   return (
     <NavigationContainer>
       <Stack.Navigator>

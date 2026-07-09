@@ -14,7 +14,10 @@ const RenderCard: React.FC<RenderCardProps> = ({ itemCard }) => {
           <View style={styles.textContainer}>
             <Text style={styles.textBill}>{itemCard.nome}</Text>
 
-            <Text style={styles.textBill}> R$ {itemCard.valor} </Text>
+            <Text style={styles.textBill}>
+              {" "}
+              R$ {itemCard.valor.toFixed(2)}{" "}
+            </Text>
           </View>
 
           <Text style={styles.subTextBill}> Venc.: {itemCard.venc} </Text>
@@ -30,6 +33,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
+    marginVertical: 2,
   },
 
   card: {

@@ -35,7 +35,7 @@ const Bills: React.FC<BillProps> = ({ onOpenModal, bills }) => {
 const styles = StyleSheet.create({
   triggercard: {
     position: "absolute",
-    bottom: 20,
+    bottom: 70,
     right: 20,
     width: 60,
     height: 60,

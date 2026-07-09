@@ -98,7 +98,7 @@ const ModalBill: React.FC<ModalBill> = ({ visible, onClose, onSave }) => {
                     <Text style={styles.modaltext}>Valor: </Text>
                     <TextInput
                       style={styles.input}
-                      placeholder="Digite o valor da Compra"
+                      placeholder="Digite o valor da compra"
                       keyboardType="numeric"
                       value={valor}
                       onChangeText={setValor}
@@ -110,7 +110,7 @@ const ModalBill: React.FC<ModalBill> = ({ visible, onClose, onSave }) => {
                     <Text style={styles.modaltext}> Venc.: </Text>
                     <TextInput
                       style={styles.input}
-                      placeholder="Digite a data de vencimento"
+                      placeholder="Ex: Dia 5"
                       value={venc}
                       onChangeText={setVenc}
                     />
