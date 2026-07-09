@@ -16,9 +16,10 @@ import { handleBackgroundTap } from "./ModalScreen";
 interface ModalBill {
   visible: boolean;
   onClose: () => void;
+  onSave: (data: any) => void;
 }
 
-const ModalBill: React.FC<ModalBill> = ({ visible, onClose }) => {
+const ModalBill: React.FC<ModalBill> = ({ visible, onClose, onSave }) => {
   const [isKeyboardVisible, setIsKeyboardVisible] = useState(false);
   const handlePress = () => handleBackgroundTap(isKeyboardVisible, onClose);
 
@@ -48,7 +49,12 @@ const ModalBill: React.FC<ModalBill> = ({ visible, onClose }) => {
     if (nome.trim() === "" || valor.trim() === "" || venc.trim() === "") {
       alert("Preencha os campos obrigatórios");
     } else {
-      return;
+      onSave({
+        nome,
+        valor: parseFloat(valor),
+        venc,
+        obs,
+      });
     }
   };
 

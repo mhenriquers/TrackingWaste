@@ -11,3 +11,10 @@ export type RootStackParamList = {
   ExpenseList: undefined;
   Bills: undefined;
 };
+
+export interface InterfaceBill {
+  nome: string;
+  valor: number;
+  venc: string;
+  obs: string;
+}

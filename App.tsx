@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Type, RootStackParamList } from "./Types";
+import { Type, RootStackParamList, InterfaceBill } from "./Types";
 import { NavigationContainer } from "@react-navigation/native";
 import {
   createNativeStackNavigator,
@@ -13,6 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useFocusEffect } from "@react-navigation/native";
 import Bills from "./Bills";
 import ModalBill from "./ModalBills";
+import RenderCard from "./RenderCard";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 type HomeProps = NativeStackScreenProps<RootStackParamList, "Home">;
@@ -112,9 +113,39 @@ const App: React.FC = () => {
     loadExpenses();
   }, []);
 
+  //-------------------------------função pra salvar conta fixa
+  const [bills, setBills] = useState<InterfaceBill[]>([]);
+  const handleSaveBill = (billData: InterfaceBill) => {
+    setBills([...bills, billData]);
+    setIsModalVisible(false);
+  };
+
+  //--------------------------função para salvar dados
+  const SalvaConta = async (billsToSave: InterfaceBill[]) => {
+    try {
+      await AsyncStorage.setItem("bills", JSON.stringify(billsToSave));
+    } catch (error) {
+      alert("Erro ao salvar contas");
+    }
+  };
+
+  //--------------------------função para carregar dados
+  const CarregaConta = async () => {
+    try {
+      const savedBills = await AsyncStorage.getItem("bills");
+      if (savedBills) {
+        setBills(JSON.parse(savedBills));
+      }
+    } catch (error) {
+      alert("Erro ao carregar contas");
+    }
+  };
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
+        {/*--------------------------Tela Home------------------------------ */}
+
         <Stack.Screen name={"Home"} options={{ headerShown: false }}>
           {(props) => (
             <HomeScreen
@@ -130,6 +161,8 @@ const App: React.FC = () => {
             />
           )}
         </Stack.Screen>
+
+        {/*--------------------------Tela de Gastos------------------------------ */}
 
         <Stack.Screen
           name={"ExpenseList"}
@@ -173,6 +206,8 @@ const App: React.FC = () => {
           )}
         </Stack.Screen>
 
+        {/*--------------------------Tela Contas Fixas------------------------ */}
+
         <Stack.Screen
           name={"Bills"}
           options={{ headerShown: true, headerTitle: "Contas Fixas" }}
@@ -185,6 +220,7 @@ const App: React.FC = () => {
           {(props: NativeStackScreenProps<RootStackParamList, "Bills">) => (
             <Bills
               {...props}
+              bills={bills}
               onOpenModal={() => {
                 setModalType("bill");
                 setIsModalVisible(true);
@@ -193,6 +229,8 @@ const App: React.FC = () => {
           )}
         </Stack.Screen>
       </Stack.Navigator>
+
+      {/*----------------------condicional Menu De Exclusão------------------ */}
 
       {isMenuVisible && (
         <View style={styles.menuOverlay}>
@@ -210,6 +248,8 @@ const App: React.FC = () => {
           </TouchableOpacity>
         </View>
       )}
+
+      {/*----------------------Tela de Menu De Exclusão------------------ */}
 
       {isDeleteMode && (
         <View style={styles.containerButtons}>
@@ -235,6 +275,8 @@ const App: React.FC = () => {
         </View>
       )}
 
+      {/*----------------------Variavel de controle Modal------------------ */}
+
       {isModalVisible && modalType === "expense" && (
         <ModalScreen
           visible={isModalVisible}
@@ -247,6 +289,7 @@ const App: React.FC = () => {
         <ModalBill
           visible={isModalVisible}
           onClose={() => setIsModalVisible(false)}
+          onSave={handleSaveBill}
         />
       )}
     </NavigationContainer>
