@@ -70,7 +70,7 @@ const ModalBill: React.FC<ModalBill> = ({ visible, onClose, onSave }) => {
                   <TouchableOpacity onPress={onClose}>
                     <View style={styles.closeImageContainer}>
                       <Image
-                        source={require("./assets/closeImage.png")}
+                        source={require("./../assets/closeImage.png")}
                         style={styles.closeImage}
                       />
                     </View>

@@ -9,17 +9,10 @@ import {
   Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-
-export interface Bill {
-  id: string;
-  description: string;
-  amount: number;
-  dueDate?: string;
-  category?: string;
-}
+import { InterfaceBill } from "../Types";
 
 interface MenuExclusaoProps {
-  bills: Bill[];
+  bills: InterfaceBill[];
   onDelete: (id: string) => void;
   onCancel: () => void;
 }
@@ -35,7 +28,7 @@ const MenuExclusao: React.FC<MenuExclusaoProps> = ({
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
   const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const persistBills = async (updatedBills: Bill[]): Promise<void> => {
+  const persistBills = async (updatedBills: InterfaceBill[]): Promise<void> => {
     try {
       await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedBills));
     } catch (error) {
@@ -73,7 +66,7 @@ const MenuExclusao: React.FC<MenuExclusaoProps> = ({
     onCancel();
   };
 
-  const renderItem = ({ item }: { item: Bill }) => (
+  const renderItem = ({ item }: { item: InterfaceBill }) => (
     <TouchableOpacity
       style={[styles.item, selectedId === item.id && styles.itemSelected]}
       onPress={() => handleSelect(item.id)}

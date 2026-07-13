@@ -22,7 +22,7 @@ const HomeScreen: React.FC<HomeProps> = ({
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
-        <Image source={require("./assets/logo.png")} style={styles.logo} />
+        <Image source={require("./../assets/logo.png")} style={styles.logo} />
 
         <TouchableOpacity
           onPress={() => navigation.navigate("Bills")}

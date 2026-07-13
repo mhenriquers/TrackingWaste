@@ -43,6 +43,7 @@ const App: React.FC = () => {
   const [modalType, setModalType] = useState<"expense" | "bill" | null>(null);
 
   const [selectedExpenseIds, setSelectedExpenseIds] = useState<string[]>([]);
+
   const [isDeleteMode, setIsDeleteMode] = useState(false);
 
   const [isMenuVisible, setIsMenuVisible] = useState(false);
@@ -57,7 +58,7 @@ const App: React.FC = () => {
     );
   };
 
-  // ------------------------função para salvar os dados
+  // ------------------------função para salvar os dados ed
 
   const saveExpenses = async (expensesToSave: Type[]) => {
     try {
@@ -102,7 +103,7 @@ const App: React.FC = () => {
     setIsModalVisible(false);
   };
 
-  //----------------------------------------- função para deletar
+  //----------------------------------------- função para deletar gasto
   const handleDeleteExpense = () => {
     if (selectedExpenseIds.length > 0) {
       const updatedExpenses = expenses.filter(
@@ -216,7 +217,26 @@ const App: React.FC = () => {
 
         <Stack.Screen
           name={"Bills"}
-          options={{ headerShown: true, headerTitle: "Contas Fixas" }}
+          options={{
+            headerShown: true,
+            headerTitle: "Contas Fixas",
+            headerRight: () => (
+              <TouchableOpacity
+                onPress={() => {
+                  setIsMenuVisible(true);
+                }}
+              >
+                <Image
+                  source={require("./assets/3-pontos.png")}
+                  style={{
+                    width: 40,
+                    height: 40,
+                    marginRight: 0,
+                  }}
+                />
+              </TouchableOpacity>
+            ),
+          }}
           listeners={({ navigation }) => ({
             beforeRemove: () => {
               setIsModalVisible(false);
@@ -226,7 +246,7 @@ const App: React.FC = () => {
           {(props: NativeStackScreenProps<RootStackParamList, "Bills">) => (
             <Bills
               {...props}
-              bills={bills}
+              innerBill={bills}
               onOpenModal={() => {
                 setModalType("bill");
                 setIsModalVisible(true);

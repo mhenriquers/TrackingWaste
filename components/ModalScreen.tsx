@@ -95,7 +95,7 @@ const ModalScreen: React.FC<ModalScreenProps> = ({
                   <TouchableOpacity onPress={onClose}>
                     <View style={styles.closeImageContainer}>
                       <Image
-                        source={require("../../assets/closeImage.png")}
+                        source={require("./../assets/closeImage.png")}
                         style={styles.closeImage}
                       />
                     </View>
