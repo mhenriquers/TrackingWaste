@@ -18,8 +18,6 @@ export interface InterfaceBill {
   venc: string;
   obs: string;
   id: string;
-  description: string;
-  amount: number;
   dueDate?: string;
   category?: string;
 }

@@ -9,71 +9,91 @@ import {
   Alert,
 } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { InterfaceBill } from "../Types";
 
-interface MenuExclusaoProps {
-  bills: InterfaceBill[];
-  onDelete: (id: string) => void;
-  onCancel: () => void;
+// Adicionado o tipo genérico <T> que estende um objeto com 'id'
+interface MenuExclusaoGenericoProps<T extends { id: string }> {
+  items: T[]; // A lista de dados (bills, expenses, etc.)
+  storageKey: string; // A chave específica do AsyncStorage para salvar (@bills:data, @expenses:data)
+  title: string; // O título principal do Modal (ex: "Excluir Gastos")
+  subtitle: string; // O subtítulo descritivo
+  renderTitle: (item: T) => string; // Função que escolhe qual propriedade é o título (ex: item => item.nome)
+  renderSubtitle: (item: T) => string; // Função que escolhe qual propriedade é o valor/subtítulo (ex: item => `R$ ${item.valor}`)
+  onDelete: (ids: string[]) => void; // Disparado passando os IDs deletados para atualizar a tela principal
+  onCancel: () => void; // Fecha o modal
 }
 
-const STORAGE_KEY = "@bills:data";
-
-const MenuExclusao: React.FC<MenuExclusaoProps> = ({
-  bills,
+// O componente agora aceita o tipo genérico <T>
+const MenuExclusaoGenerico = <T extends { id: string }>({
+  items,
+  storageKey,
+  title,
+  subtitle,
+  renderTitle,
+  renderSubtitle,
   onDelete,
   onCancel,
-}) => {
-  const [selectedId, setSelectedId] = useState<string | null>(null);
+}: MenuExclusaoGenericoProps<T>) => {
+  const [selectedIds, setSelectedIds] = useState<string[]>([]);
   const [isDeleting, setIsDeleting] = useState<boolean>(false);
-  const [modalVisible, setModalVisible] = useState<boolean>(false);
 
-  const persistBills = async (updatedBills: InterfaceBill[]): Promise<void> => {
+  const persistItems = async (updatedItems: T[]): Promise<void> => {
     try {
-      await AsyncStorage.setItem(STORAGE_KEY, JSON.stringify(updatedBills));
+      await AsyncStorage.setItem(storageKey, JSON.stringify(updatedItems));
     } catch (error) {
-      Alert.alert("Erro", "Não foi possível salvar os dados.");
+      Alert.alert("Erro", "Não foi possível salvar os dados atualizados.");
     }
   };
 
   const handleSelect = (id: string): void => {
-    setSelectedId(id);
+    setSelectedIds((prevSelected) => {
+      if (prevSelected.includes(id)) {
+        return prevSelected.filter((item) => item !== id);
+      } else {
+        return [...prevSelected, id];
+      }
+    });
   };
 
   const handleConfirmDelete = async (): Promise<void> => {
-    if (!selectedId) {
-      Alert.alert("Atenção", "Selecione uma conta para excluir.");
+    if (selectedIds.length === 0) {
+      Alert.alert("Atenção", "Selecione pelo menos um item para excluir.");
       return;
     }
 
     setIsDeleting(true);
     try {
-      const updatedBills = bills.filter((bill) => bill.id !== selectedId);
-      await persistBills(updatedBills);
-      onDelete(selectedId);
-      setSelectedId(null);
-      setModalVisible(false);
+      const updatedItems = items.filter(
+        (item) => !selectedIds.includes(item.id),
+      );
+      await persistItems(updatedItems);
+
+      onDelete(selectedIds);
+      setSelectedIds([]);
+      onCancel();
     } catch (error) {
-      Alert.alert("Erro", "Não foi possível excluir a conta.");
+      Alert.alert("Erro", "Não foi possível realizar a exclusão.");
     } finally {
       setIsDeleting(false);
     }
   };
 
   const handleCancel = (): void => {
-    setSelectedId(null);
-    setModalVisible(false);
+    setSelectedIds([]);
     onCancel();
   };
 
-  const renderItem = ({ item }: { item: InterfaceBill }) => (
+  const renderItem = ({ item }: { item: T }) => (
     <TouchableOpacity
-      style={[styles.item, selectedId === item.id && styles.itemSelected]}
+      style={[
+        styles.item,
+        selectedIds.includes(item.id) && styles.itemSelected,
+      ]}
       onPress={() => handleSelect(item.id)}
     >
       <View style={styles.itemContent}>
-        <Text style={styles.description}>{item.description}</Text>
-        <Text style={styles.amount}>R$ {item.amount.toFixed(2)}</Text>
+        {/* Usa as funções dinâmicas passadas por props para renderizar os textos */}
+        <Text style={styles.description}>{renderTitle(item)}</Text>
+        <Text style={styles.amount}>{renderSubtitle(item)}</Text>
       </View>
     </TouchableOpacity>
   );
@@ -82,24 +102,21 @@ const MenuExclusao: React.FC<MenuExclusaoProps> = ({
     <Modal
       animationType="slide"
       transparent={true}
-      visible={true}
+      visible={items.length > 0}
       onRequestClose={handleCancel}
     >
       <View style={styles.overlay}>
         <View style={styles.container}>
-          <Text style={styles.title}>Excluir Conta</Text>
-
-          <Text style={styles.subtitle}>
-            Selecione a conta que deseja excluir:
-          </Text>
+          <Text style={styles.title}>{title}</Text>
+          <Text style={styles.subtitle}>{subtitle}</Text>
 
           <FlatList
-            data={bills}
+            data={items}
             keyExtractor={(item) => item.id}
             renderItem={renderItem}
             style={styles.list}
             ListEmptyComponent={
-              <Text style={styles.emptyText}>Nenhuma conta disponível.</Text>
+              <Text style={styles.emptyText}>Nenhum item disponível.</Text>
             }
           />
 
@@ -116,13 +133,16 @@ const MenuExclusao: React.FC<MenuExclusaoProps> = ({
               style={[
                 styles.button,
                 styles.deleteButton,
-                (!selectedId || isDeleting) && styles.buttonDisabled,
+                (selectedIds.length === 0 || isDeleting) &&
+                  styles.buttonDisabled,
               ]}
               onPress={handleConfirmDelete}
-              disabled={!selectedId || isDeleting}
+              disabled={selectedIds.length === 0 || isDeleting}
             >
               <Text style={styles.deleteText}>
-                {isDeleting ? "Excluindo..." : "Excluir"}
+                {isDeleting
+                  ? "Excluindo..."
+                  : `Excluir (${selectedIds.length})`}
               </Text>
             </TouchableOpacity>
           </View>
@@ -153,14 +173,8 @@ const styles = StyleSheet.create({
     marginBottom: 8,
     textAlign: "center",
   },
-  subtitle: {
-    fontSize: 14,
-    color: "#666",
-    marginBottom: 12,
-  },
-  list: {
-    maxHeight: 300,
-  },
+  subtitle: { fontSize: 14, color: "#666", marginBottom: 12 },
+  list: { maxHeight: 300 },
   item: {
     padding: 14,
     borderRadius: 8,
@@ -168,30 +182,15 @@ const styles = StyleSheet.create({
     borderColor: "#ddd",
     marginBottom: 8,
   },
-  itemSelected: {
-    borderColor: "#e74c3c",
-    backgroundColor: "#fdecea",
-  },
+  itemSelected: { borderColor: "#e74c3c", backgroundColor: "#fdecea" },
   itemContent: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
   },
-  description: {
-    fontSize: 16,
-    color: "#333",
-    flex: 1,
-  },
-  amount: {
-    fontSize: 16,
-    fontWeight: "600",
-    color: "#333",
-  },
-  emptyText: {
-    textAlign: "center",
-    color: "#999",
-    marginTop: 20,
-  },
+  description: { fontSize: 16, color: "#333", flex: 1 },
+  amount: { fontSize: 16, fontWeight: "600", color: "#333" },
+  emptyText: { textAlign: "center", color: "#999", marginTop: 20 },
   buttonRow: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -204,25 +203,11 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginHorizontal: 4,
   },
-  cancelButton: {
-    backgroundColor: "#ecf0f1",
-  },
-  deleteButton: {
-    backgroundColor: "#e74c3c",
-  },
-  buttonDisabled: {
-    opacity: 0.5,
-  },
-  cancelText: {
-    color: "#333",
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  deleteText: {
-    color: "#fff",
-    fontSize: 16,
-    fontWeight: "600",
-  },
+  cancelButton: { backgroundColor: "#ecf0f1" },
+  deleteButton: { backgroundColor: "#e74c3c" },
+  buttonDisabled: { opacity: 0.5 },
+  cancelText: { color: "#333", fontSize: 16, fontWeight: "600" },
+  deleteText: { color: "#fff", fontSize: 16, fontWeight: "600" },
 });
 
-export default MenuExclusao;
+export default MenuExclusaoGenerico;

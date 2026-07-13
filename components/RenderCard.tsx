@@ -39,12 +39,16 @@ const RenderCard: React.FC<RenderItemProps> = ({ itemCard }) => {
             title={itemCard.nome}
             onPress={handlePress}
             right={() => (
-              <Text style={styles.titleText}> {`Venc.: ${itemCard.venc}`}</Text>
+              <Text style={styles.titleText}> {`Venc: ${itemCard.venc}`}</Text>
             )}
             titleStyle={styles.titleText}
           >
-            <List.Item title={["R$ ", itemCard.valor.toFixed(2)]} />
-            <List.Item title={`Observação: ${itemCard.obs}`} />
+            <List.Item
+              title={`R$ ${itemCard.valor.toFixed(2)}`}
+              key="valor"
+              titleStyle={styles.titleText}
+            />
+            <List.Item title={`Observação: ${itemCard.obs}`} key="observacao" />
           </List.Accordion>
         </List.Section>
       </View>

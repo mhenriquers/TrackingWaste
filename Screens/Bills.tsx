@@ -13,7 +13,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import MenuOverlay from "../components/MenuOverlay";
 import { useNavigation } from "@react-navigation/native";
 import HeaderMenu from "../components/HeaderMenu";
-import MenuExclusao from "../components/ExcluseMenu";
+import MenuExclusaoGenerico from "../components/ExcluseMenu";
 
 interface BillProps {
   onOpenModal: () => void;
@@ -41,17 +41,26 @@ const Bills: React.FC<BillProps> = ({ onOpenModal, innerBill }) => {
 
   //----------------------------------- função para deletar contas fixas
 
-  const handleDeleteBill = () => {
-    if (selectedBillIds.length > 0) {
+  const handleDeleteBill = (idsParaDeletar: string[]) => {
+    if (idsParaDeletar.length > 0) {
+      // Filtra removendo todas as contas cujos IDs estão na lista de exclusão
       const updatedBills = bills.filter(
-        (bill) => !selectedBillIds.includes(bill.id),
+        (bill) => !idsParaDeletar.includes(bill.id),
       );
+
       setBills(updatedBills);
-      setSelectedBillIds([]);
-      alert("Conta excluída!");
+      // Nota: O próprio modal já pode salvar no AsyncStorage,
+      // mas manter aqui garante que o estado local fique idêntico.
+      saveBills(updatedBills);
+
+      alert("Conta(s) excluída(s) com sucesso!");
     } else {
-      alert("Não há mais nada que possa ser feito!");
+      alert("Nenhuma conta foi selecionada.");
     }
+  };
+
+  const handleSelectBill = (id: string) => {
+    setSelectedBillIds((prev) => (prev.includes(id) ? [] : [id]));
   };
 
   useEffect(() => {
@@ -73,8 +82,9 @@ const Bills: React.FC<BillProps> = ({ onOpenModal, innerBill }) => {
     <SafeAreaView style={{ flex: 1 }}>
       <FlatList
         data={bills}
-        renderItem={({ item }) => <RenderCard itemCard={item} />}
-        keyExtractor={(item, index) => index.toString()}
+        renderItem={({ item }) => <RenderCard itemCard={item} />} // Removida a prop key daqui
+        keyExtractor={(item) => item.id} // Este cara já resolve tudo sozinho
+        ListEmptyComponent={<Text> </Text>}
       />
 
       <MenuOverlay
@@ -89,37 +99,16 @@ const Bills: React.FC<BillProps> = ({ onOpenModal, innerBill }) => {
       />
 
       {isDeleteMode && (
-        <MenuExclusao
-          bills={bills}
+        <MenuExclusaoGenerico
+          items={bills}
+          storageKey="bills" // Sua chave do AsyncStorage
+          title="Excluir Contas"
+          subtitle="Selecione as contas que deseja apagar:"
+          renderTitle={(item) => item.nome}
+          renderSubtitle={(item) => `R$ ${item.valor.toFixed(2)}`}
           onDelete={handleDeleteBill}
           onCancel={() => setIsDeleteMode(false)}
         />
-      )}
-
-      {/*----------------------Tela de Menu De Exclusão------------------ */}
-
-      {isDeleteMode && (
-        <View style={styles.containerButtons}>
-          <TouchableOpacity
-            onPress={() => {
-              setIsDeleteMode(false);
-              setSelectedBillIds([]);
-            }}
-            style={styles.cancelButton}
-          >
-            <Text style={styles.textButtons}>Cancelar</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              handleDeleteBill();
-              setIsDeleteMode(false);
-            }}
-            style={styles.eraserButton}
-          >
-            <Text style={styles.textButtons}>Apagar</Text>
-          </TouchableOpacity>
-        </View>
       )}
       <TouchableOpacity onPress={onOpenModal} style={styles.triggercard}>
         <Text style={styles.triggertext}> + </Text>

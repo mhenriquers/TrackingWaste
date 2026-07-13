@@ -104,17 +104,18 @@ const App: React.FC = () => {
   };
 
   //----------------------------------------- função para deletar gasto
-  const handleDeleteExpense = () => {
-    if (selectedExpenseIds.length > 0) {
+  const handleDeleteExpenses = (idsParaDeletar: string[]) => {
+    // Usamos diretamente o parâmetro que o Modal Genérico nos enviou!
+    if (idsParaDeletar && idsParaDeletar.length > 0) {
       const updatedExpenses = expenses.filter(
-        (expense) => !selectedExpenseIds.includes(expense.id),
+        (expense) => !idsParaDeletar.includes(expense.id),
       );
+
       setExpenses(updatedExpenses);
       saveExpenses(updatedExpenses);
-      setSelectedExpenseIds([]);
-      alert("Gasto deletado!");
+      alert("Gasto(s) deletado(s) com sucesso!");
     } else {
-      alert("Selecione ao menos um gasto");
+      alert("Selecione ao menos um gasto para excluir.");
     }
   };
 
@@ -206,9 +207,9 @@ const App: React.FC = () => {
               expenseList={expenses}
               totalGastoCredito={valorTotalCredito}
               totalGastoDebito={valorTotalDebito}
-              selectedExpenseIds={selectedExpenseIds}
-              onSelectExpense={toggleSelectExpense}
               isDeleteMode={isDeleteMode}
+              setIsDeleteMode={setIsDeleteMode}
+              onDeleteExpenses={handleDeleteExpenses}
             />
           )}
         </Stack.Screen>
@@ -271,32 +272,6 @@ const App: React.FC = () => {
             }}
           >
             <Text style={styles.menuOption}> Apagar </Text>
-          </TouchableOpacity>
-        </View>
-      )}
-
-      {/*----------------------Tela de Menu De Exclusão------------------ */}
-
-      {isDeleteMode && (
-        <View style={styles.containerButtons}>
-          <TouchableOpacity
-            onPress={() => {
-              setIsDeleteMode(false);
-              setSelectedExpenseIds([]);
-            }}
-            style={styles.cancelButton}
-          >
-            <Text style={styles.textButtons}>Cancelar</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            onPress={() => {
-              handleDeleteExpense();
-              setIsDeleteMode(false);
-            }}
-            style={styles.eraserButton}
-          >
-            <Text style={styles.textButtons}>Apagar</Text>
           </TouchableOpacity>
         </View>
       )}

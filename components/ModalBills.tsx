@@ -50,6 +50,7 @@ const ModalBill: React.FC<ModalBill> = ({ visible, onClose, onSave }) => {
       alert("Preencha os campos obrigatórios");
     } else {
       onSave({
+        id: Date.now().toString(),
         nome,
         valor: parseFloat(valor),
         venc,
