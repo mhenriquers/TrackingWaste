@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Image,
 } from "react-native";
-import { Type } from "./Types";
+import { Type } from "../Types";
 
 interface ExpenseProps {
   expenseList: Type[];

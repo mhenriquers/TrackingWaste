@@ -110,7 +110,7 @@ const ModalBill: React.FC<ModalBill> = ({ visible, onClose, onSave }) => {
                     <Text style={styles.modaltext}> Venc.: </Text>
                     <TextInput
                       style={styles.input}
-                      placeholder="Ex: Dia 5"
+                      placeholder="Ex: 5"
                       value={venc}
                       onChangeText={setVenc}
                     />

@@ -1,9 +1,9 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Type } from "./Types";
+import { Type } from "../Types";
 
-interface AppProps {
+interface HomeProps {
   navigation: any;
   onOpenModal: () => void;
   expenses: Type[];
@@ -12,7 +12,7 @@ interface AppProps {
   valorTotal: number;
 }
 
-const HomeScreen: React.FC<AppProps> = ({
+const HomeScreen: React.FC<HomeProps> = ({
   navigation,
   onOpenModal,
   totalGastoCredito,

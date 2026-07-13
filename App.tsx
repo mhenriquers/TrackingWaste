@@ -5,14 +5,14 @@ import {
   createNativeStackNavigator,
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
-import ExpenseList from "./ExpensesList";
-import HomeScreen from "./HomeScreen";
-import ModalScreen from "./ModalScreen";
+import ExpenseList from "./Screens/ExpensesList";
+import HomeScreen from "./Screens/HomeScreen";
+import ModalScreen from "./components/ModalScreen";
 import { TouchableOpacity, Image, StyleSheet, Text, View } from "react-native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import Bills from "./Bills";
-import ModalBill from "./ModalBills";
-import RenderCard from "./RenderCard";
+import Bills from "./Screens/Bills";
+import ModalBill from "./components/ModalBills";
+import RenderCard from "./components/RenderCard";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
 type HomeProps = NativeStackScreenProps<RootStackParamList, "Home">;

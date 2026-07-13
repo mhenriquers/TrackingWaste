@@ -12,7 +12,7 @@ import {
   KeyboardAvoidingView,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Type } from "./Types";
+import { Type } from "../Types";
 
 interface ModalScreenProps {
   visible: boolean;
@@ -95,7 +95,7 @@ const ModalScreen: React.FC<ModalScreenProps> = ({
                   <TouchableOpacity onPress={onClose}>
                     <View style={styles.closeImageContainer}>
                       <Image
-                        source={require("./assets/closeImage.png")}
+                        source={require("../../assets/closeImage.png")}
                         style={styles.closeImage}
                       />
                     </View>

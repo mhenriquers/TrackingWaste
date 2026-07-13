@@ -7,8 +7,8 @@ import {
   FlatList,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { InterfaceBill } from "./Types";
-import RenderCard from "./RenderCard";
+import { InterfaceBill } from "../Types";
+import RenderCard from "../components/RenderCard";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 interface BillProps {
