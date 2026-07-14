@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { Type } from "../Types";
+import { InterfaceBill, Type } from "../Types";
+import Bills from "./Bills";
 
 interface HomeProps {
   navigation: any;
@@ -10,6 +11,7 @@ interface HomeProps {
   totalGastoCredito: number;
   totalGastoDebito: number;
   valorTotal: number;
+  innerBill: InterfaceBill[];
 }
 
 const HomeScreen: React.FC<HomeProps> = ({
@@ -18,7 +20,11 @@ const HomeScreen: React.FC<HomeProps> = ({
   totalGastoCredito,
   totalGastoDebito,
   valorTotal,
+  innerBill,
 }) => {
+  const paidBills = innerBill.filter((bill) => bill.pago).length;
+  const totalBills = innerBill.length;
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <View style={styles.container}>
@@ -29,7 +35,10 @@ const HomeScreen: React.FC<HomeProps> = ({
           style={[styles.card, styles.subCard]}
         >
           <Text style={styles.subtitle}> Fixas: </Text>
-          <Text style={styles.progressText}> 4/7 </Text>
+          <Text style={styles.progressText}>
+            {" "}
+            {paidBills}/{totalBills}{" "}
+          </Text>
           <Text style={styles.value}> R$ 0,00 </Text>
         </TouchableOpacity>
 

@@ -14,6 +14,7 @@ import MenuOverlay from "../components/MenuOverlay";
 import { useNavigation } from "@react-navigation/native";
 import HeaderMenu from "../components/HeaderMenu";
 import MenuExclusaoGenerico from "../components/ExcluseMenu";
+import ProgressBar from "../components/ProgressBar";
 
 interface BillProps {
   onOpenModal: () => void;
@@ -28,6 +29,7 @@ const Bills: React.FC<BillProps> = ({ onOpenModal, innerBill }) => {
   const [isMenuVisible, setIsMenuVisible] = useState(false);
   const [isDeleteMode, setIsDeleteMode] = useState(false);
   const [selectedBillIds, setSelectedBillIds] = useState<string[]>([]);
+  const [progress, setProgress] = useState<number>(0);
 
   //-------------------------função para salvar contas fixas
 
@@ -78,11 +80,35 @@ const Bills: React.FC<BillProps> = ({ onOpenModal, innerBill }) => {
     });
   }, [navigation]);
 
+  useEffect(() => {
+    setProgress(calculaProgress());
+  }, [bills]);
+
+  const calculaProgress = (): number => {
+    if (bills.length === 0) return 0;
+    const paidBills = bills.filter((bill) => bill.pago).length;
+    return (paidBills / bills.length) * 100;
+  };
+
+  const handleTogglePaid = (id: string) => {
+    const updatedBills = bills.map((bill) =>
+      bill.id === id ? { ...bill, pago: !bill.pago } : bill,
+    );
+    setBills(updatedBills);
+    saveBills(updatedBills);
+  };
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
+      <ProgressBar progress={progress} label="Contas Pagas" />
       <FlatList
         data={bills}
-        renderItem={({ item }) => <RenderCard itemCard={item} />} // Removida a prop key daqui
+        renderItem={({ item }) => (
+          <RenderCard
+            itemCard={item}
+            onTogglePaid={() => handleTogglePaid(item.id)}
+          />
+        )} // Removida a prop key daqui
         keyExtractor={(item) => item.id} // Este cara já resolve tudo sozinho
         ListEmptyComponent={<Text> </Text>}
       />

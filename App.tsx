@@ -166,6 +166,7 @@ const App: React.FC = () => {
               totalGastoCredito={valorTotalCredito}
               totalGastoDebito={valorTotalDebito}
               valorTotal={valorTotal}
+              innerBill={bills}
             />
           )}
         </Stack.Screen>

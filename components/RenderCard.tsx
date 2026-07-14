@@ -12,15 +12,18 @@ import { InterfaceBill } from "../Types";
 
 interface RenderItemProps {
   itemCard: InterfaceBill;
+  onTogglePaid?: () => void;
 }
-const RenderCard: React.FC<RenderItemProps> = ({ itemCard }) => {
+const RenderCard: React.FC<RenderItemProps> = ({ itemCard, onTogglePaid }) => {
   const [expanded, setExpanded] = React.useState(false);
-  const [checked, setChecked] = React.useState(false);
+  const [checked, setChecked] = React.useState(itemCard.pago);
 
   const handlePress = () => setExpanded(!expanded);
+
   const handleCheckboxPress = (e: GestureResponderEvent) => {
     e.stopPropagation();
     setChecked(!checked);
+    onTogglePaid?.();
   };
 
   return (
@@ -39,7 +42,7 @@ const RenderCard: React.FC<RenderItemProps> = ({ itemCard }) => {
             title={itemCard.nome}
             onPress={handlePress}
             right={() => (
-              <Text style={styles.titleText}> {`Venc: ${itemCard.venc}`}</Text>
+              <Text style={styles.titleText}> {`Venc. ${itemCard.venc}`}</Text>
             )}
             titleStyle={styles.titleText}
           >
@@ -48,7 +51,12 @@ const RenderCard: React.FC<RenderItemProps> = ({ itemCard }) => {
               key="valor"
               titleStyle={styles.titleText}
             />
-            <List.Item title={`Observação: ${itemCard.obs}`} key="observacao" />
+            {itemCard.obs && itemCard.obs.trim() !== "" && (
+              <List.Item
+                title={`Observação: ${itemCard.obs}`}
+                key="observacao"
+              />
+            )}
           </List.Accordion>
         </List.Section>
       </View>
@@ -58,14 +66,13 @@ const RenderCard: React.FC<RenderItemProps> = ({ itemCard }) => {
 
 const styles = StyleSheet.create({
   titleText: {
-    fontSize: 18,
+    fontSize: 16,
     fontWeight: "bold",
   },
 
   container: {
     flexDirection: "row",
     alignItems: "flex-start",
-    marginVertical: 6,
     marginHorizontal: 12,
   },
 
@@ -87,8 +94,8 @@ const styles = StyleSheet.create({
   },
 
   checkboxChecked: {
-    backgroundColor: "#2563EB",
-    borderColor: "#2563EB",
+    backgroundColor: "#41d606",
+    borderColor: "#35b104",
   },
 
   checkmark: {

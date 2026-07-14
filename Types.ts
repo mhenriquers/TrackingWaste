@@ -20,4 +20,5 @@ export interface InterfaceBill {
   id: string;
   dueDate?: string;
   category?: string;
+  pago: boolean;
 }

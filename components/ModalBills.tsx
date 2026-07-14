@@ -84,7 +84,7 @@ const ModalBill: React.FC<ModalBill> = ({ visible, onClose, onSave }) => {
                   {/*---------------input Nome--------------*/}
 
                   <View style={styles.containerLabel}>
-                    <Text style={styles.modaltext}>Nome: </Text>
+                    <Text style={styles.modaltext}>Nome:</Text>
                     <TextInput
                       style={styles.input}
                       placeholder="Digite o nome da compra"
@@ -96,7 +96,7 @@ const ModalBill: React.FC<ModalBill> = ({ visible, onClose, onSave }) => {
                   {/*--------------input Valor--------------*/}
 
                   <View style={styles.containerLabel}>
-                    <Text style={styles.modaltext}>Valor: </Text>
+                    <Text style={styles.modaltext}>Valor:</Text>
                     <TextInput
                       style={styles.input}
                       placeholder="Digite o valor da compra"
@@ -108,10 +108,10 @@ const ModalBill: React.FC<ModalBill> = ({ visible, onClose, onSave }) => {
                   {/*--------------input Venc.---------------*/}
 
                   <View style={styles.containerLabel}>
-                    <Text style={styles.modaltext}> Venc.: </Text>
+                    <Text style={styles.modaltext}>Venc:</Text>
                     <TextInput
                       style={styles.input}
-                      placeholder="Ex: 5"
+                      placeholder="Ex: Dia 5"
                       value={venc}
                       onChangeText={setVenc}
                     />
@@ -120,7 +120,7 @@ const ModalBill: React.FC<ModalBill> = ({ visible, onClose, onSave }) => {
                   {/*-------------input Obs-----------------*/}
 
                   <View style={styles.containerLabel}>
-                    <Text style={styles.modaltext}> Obs : </Text>
+                    <Text style={styles.modaltext}>Obs:</Text>
                     <TextInput
                       style={styles.input}
                       placeholder="Observação (opcional)"
