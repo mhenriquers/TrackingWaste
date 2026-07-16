@@ -127,7 +127,10 @@ const App: React.FC = () => {
   const [bills, setBills] = useState<InterfaceBill[]>([]);
 
   const handleSaveBill = (billData: InterfaceBill) => {
+    console.log("Nova conta:", billData); // ← Adicione isto
+    console.log("Bills antes:", bills); // ← E isto
     const updatedBills = [...bills, billData];
+    console.log("Bills depois:", updatedBills); // ← E isto
     setBills(updatedBills);
     SalvaConta(updatedBills);
     setIsModalVisible(false);
@@ -145,10 +148,15 @@ const App: React.FC = () => {
     }
   };
 
+  const handleUpdateBills = (updatedBills: InterfaceBill[]) => {
+    setBills(updatedBills);
+    SalvaConta(updatedBills);
+  };
   useEffect(() => {
     loadExpenses();
     carregaConta();
   }, []);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -254,6 +262,7 @@ const App: React.FC = () => {
                 setIsModalVisible(true);
               }}
               onDeleteBills={(updatedBills) => setBills(updatedBills)}
+              onUpdateBills={handleUpdateBills}
             />
           )}
         </Stack.Screen>

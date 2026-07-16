@@ -55,6 +55,7 @@ const ModalBill: React.FC<ModalBill> = ({ visible, onClose, onSave }) => {
         valor: parseFloat(valor),
         venc,
         obs,
+        pago: false,
       });
     }
   };

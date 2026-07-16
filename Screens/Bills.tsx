@@ -20,12 +20,14 @@ interface BillProps {
   onOpenModal: () => void;
   innerBill: InterfaceBill[];
   onDeleteBills: (updatedBills: InterfaceBill[]) => void;
+  onUpdateBills?: (updatedBills: InterfaceBill[]) => void;
 }
 
 const Bills: React.FC<BillProps> = ({
   onOpenModal,
   innerBill,
   onDeleteBills,
+  onUpdateBills,
 }) => {
   //-------------------------------- variaveis de controle
 
@@ -72,6 +74,7 @@ const Bills: React.FC<BillProps> = ({
   };
 
   useEffect(() => {
+    console.log("innerBill recebido:", innerBill);
     setBills(innerBill);
   }, [innerBill]);
 
@@ -87,6 +90,7 @@ const Bills: React.FC<BillProps> = ({
   }, [navigation]);
 
   useEffect(() => {
+    console.log("bills atualizado:", bills);
     setProgress(calculaProgress());
   }, [bills]);
 
@@ -102,6 +106,9 @@ const Bills: React.FC<BillProps> = ({
     );
     setBills(updatedBills);
     saveBills(updatedBills);
+    if (onUpdateBills) {
+      onUpdateBills(updatedBills);
+    }
   };
 
   return (
