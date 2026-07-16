@@ -1,6 +1,9 @@
 <p align= 'center'>
   <img src= './assets/anotei-faixa.gif'>
-  </p>
+</p>
+
+---
+
 ## 📱 Anotei - Controle Financeiro Pessoal
 
 **Anotei** é um aplicativo móvel leve, moderno e intuitivo desenvolvido para ajudar você a registrar seus gastos diários e gerenciar suas contas recorrentes de forma simples. Focado em praticidade e privacidade, o app funciona de maneira totalmente offline, mantendo todos os seus dados financeiros seguros dentro do seu próprio dispositivo.
@@ -22,6 +25,7 @@ _(Substitua as imagens abaixo pelos prints do seu aplicativo funcionando)_
 ## ✨ Principais Funcionalidades
 
 - **Registro de Gastos Diários:** Cadastre suas despesas de forma rápida, separando os registros entre transações no Débito e Crédito.
+
 - **Resumo Financeiro Automático:** Acompanhe em tempo real na tela principal o total geral acumulado, além dos valores específicos gastos em cada modalidade de cartão.
 - **Gestão de Contas Fixas (Recorrentes):** Controle seus boletos e contas do mês informando o nome, valor, data de vencimento e observações personalizadas.
 - **Barra de Progresso Dinâmica:** Veja de forma visual a porcentagem de contas pagas no mês conforme você marca as pendências como concluídas.
@@ -62,5 +66,5 @@ Se você deseja clonar o repositório e executar o código em sua máquina:
 
 1. Clone o repositório:
    ```bash
-   git clone [https://github.com/SEU_USUARIO/NOME_DO_REPOSITORIO.git](https://github.com/SEU_USUARIO/NOME_DO_REPOSITORIO.git)
+   git clone [https://github.com/mhenriquers/Anotei.git](https://github.com/mhenriquers/Anotei.git)
    ```
