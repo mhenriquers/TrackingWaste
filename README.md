@@ -52,7 +52,7 @@ Você pode testar a versão estável do aplicativo diretamente no seu celular An
 
 Como o app não é esta na GooglePlay, talvez o dispositivo bloqueie a instalação. abaixo estão algumas soluções:
 
-<p align="center">
+<p align="column">
 Google PLay Protect
   <img src="./assets/mais-detalhes.jpeg" width="30%" alt="Google Play Protect" />
   <img src="./assets/instalar-assim-mesmo.jpeg" width="30%" alt="Google Play Protect" />
