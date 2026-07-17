@@ -8,8 +8,6 @@
 
 **Anotei** é um aplicativo móvel leve, moderno e intuitivo desenvolvido para ajudar você a registrar seus gastos diários e gerenciar suas contas recorrentes de forma simples. Focado em praticidade e privacidade, o app funciona de maneira totalmente offline, mantendo todos os seus dados financeiros seguros dentro do seu próprio dispositivo.
 
----
-
 ## ✨ Principais Funcionalidades
 
 - **Registro de Gastos Diários:** Cadastre suas despesas de forma rápida, separando os registros entre transações no Débito e Crédito.
@@ -19,8 +17,6 @@
 - **Barra de Progresso Dinâmica:** Veja de forma visual a porcentagem de contas pagas no mês conforme você marca as pendências como concluídas.
 - **Exclusão Avançada em Lote:** Selecione múltiplos itens de uma vez e apague-os rapidamente usando um modal de exclusão genérico e interativo.
 - **Privacidade Absoluta (100% Offline):** Seus dados são seus. Nenhuma informação é enviada para servidores externos ou bancos de dados na nuvem; tudo é persistido de forma segura localmente no aparelho.
-
----
 
 ## 🛠️ Tecnologias Utilizadas
 
@@ -32,13 +28,11 @@ Este projeto foi construído utilizando as melhores práticas do ecossistema Rea
 - **Armazenamento Local:** AsyncStorage (Persistência local rápida)
 - **UI Components:** React Native Paper e Componentes Personalizados
 
----
-
 ## 📥 Download e Instalação (Android)
 
 Você pode testar a versão estável do aplicativo diretamente no seu celular Android sem precisar configurar um ambiente de desenvolvimento:
 
-👉 **[Clique aqui para baixar o Anotei v1.0.0 (Download Direto do APK)](https://github.com/mhenriquers/Anotei/releases/download/v1.0.0/Anotei.apk)**
+👉 **Clique [aqui](https://github.com/mhenriquers/Anotei/releases/download/v1.0.0/Anotei.apk) para baixar o APK**
 
 ### Passo a passo para instalar:
 
@@ -46,25 +40,21 @@ Você pode testar a versão estável do aplicativo diretamente no seu celular An
 2. Ao finalizar o download, toque no arquivo para iniciar a instalação (caso o Android solicite permissão para "Instalar aplicativos de fontes desconhecidas", basta habilitar nas configurações).
 3. Abra o app e comece a organizar suas finanças!
 
----
-
 ## 📸 Permissão para app de terceiros:
 
 Como o app não é esta na GooglePlay, talvez o dispositivo bloqueie a instalação. abaixo estão algumas soluções:
 
-Google PLay Protect
+### Google Play Protect
 
   <img src="./assets/mais-detalhes.jpeg" width="30%" alt="Google Play Protect" />
 
   <img src="./assets/instalar-assim-mesmo.jpeg" width="30%" alt="Google Play Protect" />
 
-Samsumg browser
+### Samsumg browser
 
   <img src="./assets/samsumg-browser.jpeg" width="30%" alt="Samsumg browser" />
   
   <img src="./assets/config.jpeg" width="30%" alt="Samsumg browser" />
-
----
 
 ## 🧑‍💻 Como rodar o projeto localmente
 
